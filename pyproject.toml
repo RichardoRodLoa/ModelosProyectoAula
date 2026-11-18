@@ -1,0 +1,6 @@
+[project]
+name = "mi_proyecto"
+version = "0.1.0"
+
+[tool.setuptools]
+packages = ["libs"]
