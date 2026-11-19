@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from pathlib import Path
 
 DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "dataset.csv"
+FILTERED_DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "filtereddataset.csv"
 
 def get_data():
     '''
@@ -42,8 +43,41 @@ def get_data_partitioned(test_size=0.2):
     X, y = get_data()
     
     return train_test_split(X, y, test_size=test_size)
+
+
+def get_filtered_data(): 
+    '''
+    retorna los datos filtrados como resultado del analisis del notebook `data_analysis.ipynb`
     
+    returns 
+    - X nd.array (10000, 41)
+    - y nd.array (1000,)
+    '''
+    
+    df = pd.read_csv(FILTERED_DATA_PATH, index_col="id")
+    
+    X = df.drop(columns="CLASS_LABEL").to_numpy()
+    y = df['CLASS_LABEL'].to_numpy()
+    return (X, y)
+
+    
+def get_filtered_data_partitioned(test_size=0.2): 
+    '''
+    retorna los datos particionados del dataframe de datos filtrados
+    
+    returns: 
+    - X_train
+    - X_test, 
+    - y_train
+    - y_test
+    '''
+    
+    X, y = get_filtered_data()
+    
+    return train_test_split(X, y, test_size=test_size)
     
     
 if __name__ == "__main__": 
-    print(get_data()[1].shape)
+    X, y = get_filtered_data()
+    print(f'shape X: {X.shape}')
+    print(f'shape y: {y.shape}')
